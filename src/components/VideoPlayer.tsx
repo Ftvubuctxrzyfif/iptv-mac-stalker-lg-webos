@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Play, Pause, Volume2, VolumeX, Maximize, Cast, Loader2, AlertCircle } from 'lucide-react';
+import { useKeyboardNavigation } from '@/hooks/use-keyboard-navigation';
 
 interface Channel {
   id: string;
@@ -27,6 +28,8 @@ const VideoPlayer = ({ channel, streamUrl, isLoading, error, onClose }: VideoPla
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showControls, setShowControls] = useState(true);
+
+
 
   useEffect(() => {
     const video = videoRef.current;
@@ -104,6 +107,13 @@ const VideoPlayer = ({ channel, streamUrl, isLoading, error, onClose }: VideoPla
     }
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
+
+  // TV remote navigation
+  useKeyboardNavigation({
+    onEnter: togglePlay,
+    onBack: onClose,
+    enabled: !isLoading && !error,
+  });
 
   if (error) {
     return (

@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Loader2, Search, Tv } from 'lucide-react';
 import type { Channel, Category } from '@/lib/mac-stalker-protocol';
+import { useKeyboardNavigation } from '@/hooks/use-keyboard-navigation';
 
 interface ChannelListProps {
   channels: Channel[];
@@ -16,13 +17,40 @@ interface ChannelListProps {
 const ChannelList = ({ channels, categories, onChannelSelect, isLoading }: ChannelListProps) => {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [focusedChannelIndex, setFocusedChannelIndex] = useState(0);
 
-  // Filter channels by category and search query
+  // TV remote navigation
   const filteredChannels = channels.filter((channel) => {
     const matchesCategory = selectedCategory === null || channel.tv_genre_id === selectedCategory;
     const matchesSearch = channel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          channel.number.toString().includes(searchQuery);
     return matchesCategory && matchesSearch;
+  });
+
+  useKeyboardNavigation({
+    onUp: () => {
+      if (filteredChannels.length > 0) {
+        setFocusedChannelIndex((prev) => (prev > 0 ? prev - 1 : filteredChannels.length - 1));
+      }
+    },
+    onDown: () => {
+      if (filteredChannels.length > 0) {
+        setFocusedChannelIndex((prev) => (prev < filteredChannels.length - 1 ? prev + 1 : 0));
+      }
+    },
+    onEnter: () => {
+      if (filteredChannels[focusedChannelIndex]) {
+        onChannelSelect(filteredChannels[focusedChannelIndex]);
+      }
+    },
+    onBack: () => {
+      // Navigate back to categories or search
+      if (searchQuery) {
+        setSearchQuery('');
+      } else if (selectedCategory !== null) {
+        setSelectedCategory(null);
+      }
+    },
   });
 
   const groupedChannels = filteredChannels.reduce((acc, channel) => {
@@ -90,10 +118,14 @@ const ChannelList = ({ channels, categories, onChannelSelect, isLoading }: Chann
                   {letter}
                 </h3>
                 <div className="space-y-2">
-                  {channels.map((channel) => (
+                  {channels.map((channel) => {
+                    const isFocused = filteredChannels[focusedChannelIndex]?.id === channel.id;
+                    return (
                     <Card
                       key={channel.id}
-                      className="cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
+                      className={`cursor-pointer transition-all duration-200 ${
+                        isFocused ? 'shadow-lg scale-[1.02] ring-2 ring-blue-500' : 'hover:shadow-md hover:scale-[1.02]'
+                      }`}
                       onClick={() => onChannelSelect(channel)}
                     >
                       <CardContent className="flex items-center gap-4 p-3">
@@ -127,7 +159,7 @@ const ChannelList = ({ channels, categories, onChannelSelect, isLoading }: Chann
                         </div>
                       </CardContent>
                     </Card>
-                  ))}
+                  )})}
                 </div>
               </div>
             ))

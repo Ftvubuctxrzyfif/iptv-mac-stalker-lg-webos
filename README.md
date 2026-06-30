@@ -1,50 +1,149 @@
-# Welcome to Your Kliv Project
+# IPTV Mac Stalker for LG webOS
 
-## Getting Started with Your Code
+A fast, web-based IPTV Mac Stalker client optimized for LG webOS TVs. This app implements the complete Mac Stalker middleware protocol with a TV-optimized interface and remote control navigation.
 
-We've made it easy to work on your project however you prefer. Kliv provides a full IDE experience right in your browser, but you also have this repository as your personal backup copy of the source code.
+## Features
 
-### Option 1: Use Kliv's Full IDE (Recommended)
-Visit [kliv.dev](https://kliv.dev) to access your complete development environment. Kliv provides a full-featured IDE where you can:
-- Edit your code directly with syntax highlighting and autocomplete
-- Use AI prompts to help you build features
-- See live previews of your changes
-- Debug and test your application
+✅ **Complete Mac Stalker Protocol Implementation**
+- Full authentication flow: Init → Handshake → Get Token → Get Profile → Get Main Info
+- Channel and category retrieval from Mac Stalker servers
+- Stream link generation and playback
 
-Best of all, any changes you make are automatically saved to this repository, giving you a complete backup of your work.
+✅ **TV-Optimized Interface**
+- Large, touch-friendly UI elements perfect for TV screens
+- Dark mode support for better viewing in low light
+- Responsive design that works on various screen sizes
 
-### Option 2: Work Locally with Your Own IDE
-Having this repository means you always have access to your source code. If you ever need to work offline or prefer using your local development tools, simply clone this repo and you're good to go. Everything stays perfectly synchronized with Kliv.
+✅ **Remote Control Navigation**
+- D-pad navigation support (Up/Down/Left/Right)
+- OK/Enter button to select and play channels
+- Back button to navigate through categories
+- Keyboard support for testing on desktop browsers
 
-**Prerequisites:** You'll need Node.js and npm installed. We recommend using [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) for easy installation.
+✅ **Configuration Management**
+- Editable server host and MAC address
+- Random MAC address generation
+- Configuration saved to browser storage
+- Easy settings access from header
 
-```sh
-# 1. Clone your repository
-git clone <YOUR_GIT_URL>
+✅ **Channel Browser**
+- Search channels by name or number
+- Filter by categories
+- Alphabetical grouping for easy navigation
+- Channel logos and numbering display
 
-# 2. Navigate to your project
-cd <YOUR_PROJECT_NAME>
+✅ **Video Player**
+- HTML5 video streaming
+- Custom controls optimized for TV
+- Volume control and fullscreen
+- Cast support (when available)
+- Error handling with user feedback
 
-# 3. Install dependencies
-npm install
+## How to Use
 
-# 4. Start developing
-npm run dev
-```
+### Initial Setup
 
-## What's Inside?
+1. **Open the app** - You'll see the configuration screen
+2. **Enter your server details**:
+   - **Server Host**: Your Mac Stalker portal address (e.g., `portal.example.com` or `192.168.1.100`)
+   - **MAC Address**: Your device's MAC address in format `XX:XX:XX:XX:XX:XX`
+3. **Click "Save Configuration"** - The app will connect and load channels
 
-Your project comes pre-configured with a modern tech stack:
-- **Vite** for lightning-fast builds
-- **TypeScript** for type safety
-- **React** for building user interfaces
-- **shadcn/ui** for beautiful components
-- **Tailwind CSS** for styling
+### Using the App
 
-## Ready to Go Live?
+**With LG TV Remote:**
+- **Up/Down**: Navigate through channels
+- **OK/Enter**: Play selected channel
+- **Back**: Return to channel list or clear search
 
-When you're ready to share your project with the world, simply visit [kliv.dev](https://kliv.dev) and click the **Publish** button. It's that easy!
+**With Keyboard:**
+- **Arrow Keys**: Navigate
+- **Enter/Space**: Play channel
+- **Escape**: Go back
 
----
+### Managing Configuration
 
-Happy coding! If you have any questions, we're here to help.
+- Click the **Settings icon** in the header to change server details
+- Your configuration is automatically saved and persists between sessions
+- Generate a random MAC address if needed for testing
+
+## Technical Details
+
+### Mac Stalker Protocol Flow
+
+The app implements the complete Mac Stalker middleware protocol:
+
+1. **Init/Handshake**: Establish connection with server
+2. **Get Token**: Retrieve authentication token
+3. **Get Profile**: Validate user profile
+4. **Get Main Info**: Retrieve server information
+5. **Get Categories**: Load channel categories
+6. **Get All Channels**: Retrieve complete channel list
+7. **Create Link**: Generate stream URL for playback
+
+### Architecture
+
+- **React + TypeScript**: Modern, type-safe development
+- **Tailwind CSS**: Beautiful, responsive styling
+- **Mac Stalker Protocol Client**: Custom implementation of the protocol
+- **Local Storage**: Configuration persistence
+- **HTML5 Video**: Stream playback support
+
+### Components
+
+- **`MacStalkerClient`**: Protocol implementation
+- **`IPTVConfig`**: Configuration management UI
+- **`ChannelList`**: Channel browser with search and categories
+- **`VideoPlayer`**: TV-optimized video player
+- **`Header`**: App navigation and status
+- **`StatusBar`**: Connection info and channel count
+
+## Browser Compatibility
+
+This app is designed to work in modern browsers, including:
+- LG webOS browser (primary target)
+- Chrome/Edge (for testing)
+- Firefox
+- Safari
+
+## Important Notes
+
+⚠️ **This is a web application, not a native webOS app**
+- Runs in the browser, not as a native .ipk package
+- Can be accessed via LG webOS browser or other modern browsers
+- Cannot be installed from outside the LG Content Store
+
+⚠️ **Server Requirements**
+- Requires a Mac Stalker middleware server
+- Server must support HTTP (not HTTPS) for proper protocol communication
+- Some features may depend on server configuration
+
+⚠️ **Network Considerations**
+- Best performance on local network
+- May have latency issues with remote servers
+- Stream quality depends on your internet connection
+
+## Development
+
+Built with Kliv platform - React, Vite, TypeScript, and Tailwind CSS.
+
+### Key Files
+
+- `/app/src/lib/mac-stalker-protocol.ts` - Protocol implementation
+- `/app/src/components/` - UI components
+- `/app/src/pages/Index.tsx` - Main application
+- `/app/src/hooks/` - Custom hooks for navigation
+
+## Future Enhancements
+
+Potential features for future versions:
+- Favorites/channels list
+- Electronic Program Guide (EPG)
+- Recording support (if server supports it)
+- Multiple server profiles
+- Parental controls
+- Multiple audio track support
+
+## License
+
+This is a personal project. Use responsibly and only with IPTV services you have legitimate access to.

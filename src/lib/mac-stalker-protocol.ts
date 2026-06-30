@@ -96,12 +96,13 @@ export class MacStalkerClient {
 
     if (data.token) {
       this.token = data.token;
-      const token = data.token;
+      // Reconstruct headers to ensure proper typing
+      const existingUserAgent = (this.baseHeaders as Record<string, string>)['User-Agent'] || 'Mozilla/5.0 (WebOS; Linux; SmartTV) AppleWebKit/537.36';
       this.baseHeaders = {
-        ...(this.baseHeaders as Record<string, string>),
-        'Authorization': token,
+        'Authorization': data.token,
+        'User-Agent': existingUserAgent,
       };
-      return this.token;
+      return data.token;
     }
 
     throw new Error('Failed to get token');
