@@ -5,6 +5,7 @@ import ChannelList from '@/components/ChannelList';
 import VideoPlayer from '@/components/VideoPlayer';
 import Header from '@/components/Header';
 import StatusBar from '@/components/StatusBar';
+import LocalStorageClear from '@/components/LocalStorageClear';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, AlertCircle, RefreshCw } from 'lucide-react';
@@ -160,6 +161,14 @@ const Index = () => {
     setPlayerError(null);
   };
 
+  const handleClearConfig = () => {
+    setHost('');
+    setMacAddress('');
+    setClient(null);
+    setShowConfig(true);
+    setConnectionError(null);
+  };
+
   // Show config screen
   if (showConfig) {
     return (
@@ -229,6 +238,8 @@ const Index = () => {
                     Settings
                   </Button>
                 </div>
+                
+                <LocalStorageClear onClear={handleClearConfig} />
               </CardContent>
             </Card>
           </div>
