@@ -75,12 +75,32 @@ const Index = () => {
       setIsConnected(true);
       setShowConfig(false);
       
-      toast.success(`Connected! ${chans.length} channels loaded`);
+      toast.success(`Connected! ${chans.length} channels loaded`, {
+        description: 'Successfully authenticated with your IPTV portal'
+      });
     } catch (error: any) {
       console.error('Connection error:', error);
-      setConnectionError(error.message || 'Failed to connect to server');
+      
+      let errorMessage = 'Failed to connect to server';
+      
+      if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      // Add helpful hints
+      if (errorMessage.includes('CORS')) {
+        errorMessage += '\n\n💡 Try installing a "CORS Unblock" browser extension or use a browser that allows cross-origin requests.';
+      } else if (errorMessage.includes('Network')) {
+        errorMessage += '\n\n💡 Make sure the server address is correct and your internet connection is stable.';
+      } else if (errorMessage.includes('MAC') || errorMessage.includes('profile')) {
+        errorMessage += '\n\n💡 Generate a new random MAC address if your current one is blocked or expired.';
+      }
+      
+      setConnectionError(errorMessage);
       setIsConnected(false);
-      toast.error('Connection failed. Please check your settings.');
+      toast.error('Connection failed', {
+        description: 'Check your settings and try again'
+      });
     } finally {
       setIsConnecting(false);
     }
@@ -185,7 +205,21 @@ const Index = () => {
               <CardContent className="p-8 text-center">
                 <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
                 <h3 className="text-xl font-bold mb-2">Connection Failed</h3>
-                <p className="text-muted-foreground mb-6">{connectionError}</p>
+                <p className="text-muted-foreground mb-4 whitespace-pre-line text-left text-sm">
+                  {connectionError}
+                </p>
+                
+                <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6 text-left">
+                  <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">🔧 Troubleshooting Tips:</h4>
+                  <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                    <li>• Double-check your portal address and MAC address</li>
+                    <li>• Make sure your IPTV service is active</li>
+                    <li>• Try generating a new random MAC address</li>
+                    <li>• Check if your browser is blocking the connection (CORS)</li>
+                    <li>• Open browser console (F12) for detailed error logs</li>
+                  </ul>
+                </div>
+                
                 <div className="flex gap-2 justify-center">
                   <Button onClick={handleRefresh} variant="default">
                     <RefreshCw className="w-4 h-4 mr-2" />

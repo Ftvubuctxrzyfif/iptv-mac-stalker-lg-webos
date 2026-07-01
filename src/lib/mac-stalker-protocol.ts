@@ -56,25 +56,39 @@ export class MacStalkerClient {
       'datetime': new Date().toISOString(),
     });
 
-    const response = await fetch(`${url}?${params.toString()}`, {
-      method: 'GET',
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (WebOS; Linux; SmartTV) AppleWebKit/537.36',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Handshake failed');
-    }
-
-    const data = await response.json();
+    console.log('Mac Stalker: Connecting to', url);
     
-    if (data.js && data.token) {
-      this.token = data.token;
-      this.baseHeaders = {
-        'Authorization': data.token,
-        'User-Agent': 'Mozilla/5.0 (WebOS; Linux; SmartTV) AppleWebKit/537.36',
-      };
+    try {
+      const response = await fetch(`${url}?${params.toString()}`, {
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (WebOS; Linux; SmartTV) AppleWebKit/537.36',
+        },
+      });
+
+      console.log('Mac Stalker: Response status', response.status);
+
+      if (!response.ok) {
+        throw new Error(`Server returned ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Mac Stalker: Handshake response', data);
+      
+      if (data.js && data.token) {
+        this.token = data.token;
+        this.baseHeaders = {
+          'Authorization': data.token,
+          'User-Agent': 'Mozilla/5.0 (WebOS; Linux; SmartTV) AppleWebKit/537.36',
+        };
+      } else {
+        throw new Error('Invalid response from server - missing token');
+      }
+    } catch (error: any) {
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        throw new Error('CORS error: Your IPTV server may not allow web connections. Try using a browser extension to bypass CORS or ensure your server supports cross-origin requests.');
+      }
+      throw error;
     }
   }
 
@@ -118,15 +132,19 @@ export class MacStalkerClient {
       action: 'get_profile',
     });
 
+    console.log('Mac Stalker: Getting profile');
+    
     const response = await fetch(`${url}?${params.toString()}`, {
       headers: this.baseHeaders,
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get profile');
+      throw new Error(`Failed to get profile: ${response.status}`);
     }
 
     const data = await response.json();
+    console.log('Mac Stalker: Profile response', data);
+    
     this.profile = data;
     return data;
   }
@@ -261,17 +279,30 @@ export class MacStalkerClient {
    */
   async authenticate(): Promise<boolean> {
     try {
+      console.log('Mac Stalker: Starting authentication flow');
       await this.init();
       await this.getToken();
       const profile = await this.getProfile();
       
+      console.log('Mac Stalker: Profile status', profile.status);
+      
       if (profile.status !== 'OK') {
-        throw new Error('Authentication failed: Invalid profile');
+        throw new Error(`Authentication failed: Server returned status "${profile.status}" - Check your MAC address and portal settings`);
       }
 
+      console.log('Mac Stalker: Authentication successful');
       return true;
-    } catch (error) {
-      console.error('Authentication error:', error);
+    } catch (error: any) {
+      console.error('Mac Stalker: Authentication error', error);
+      
+      if (error.message.includes('CORS')) {
+        throw new Error('CORS Error: Browser cannot connect to your IPTV server. Please check if your server allows web connections or try using this app on the same network as your server.');
+      }
+      
+      if (error.message.includes('Failed to fetch')) {
+        throw new Error('Network Error: Cannot reach the server. Check your internet connection and verify the server address is correct.');
+      }
+      
       throw error;
     }
   }
