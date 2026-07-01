@@ -44,7 +44,7 @@ const Index = () => {
       setMacAddress(savedMac);
       
       // Auto-connect if config exists
-      const newClient = new MacStalkerClient({ host: savedHost, macAddress: savedMac });
+      const newClient = new MacStalkerClient({ host: savedHost, macAddress: savedMac }, true);
       setClient(newClient);
       connect(newClient);
     } else {
@@ -109,7 +109,7 @@ const Index = () => {
 
   const handleSaveConfig = (newHost: string, newMac: string) => {
     // Validate
-    const newClient = new MacStalkerClient({ host: newHost, macAddress: newMac });
+    const newClient = new MacStalkerClient({ host: newHost, macAddress: newMac }, true);
     
     if (!newClient.validateConfig()) {
       toast.error('Invalid configuration');

@@ -194,9 +194,13 @@ export class MacStalkerClient {
       action: 'get_main_info',
     });
 
-    const response = await fetch(`${url}?${params.toString()}`, {
-      headers: this.baseHeaders,
-    });
+    const response = this.useCorsProxy
+      ? await corsProxy.proxyFetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        })
+      : await fetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        });
 
     if (!response.ok) {
       throw new Error('Failed to get main info');
@@ -215,9 +219,13 @@ export class MacStalkerClient {
       action: 'get_genres',
     });
 
-    const response = await fetch(`${url}?${params.toString()}`, {
-      headers: this.baseHeaders,
-    });
+    const response = this.useCorsProxy
+      ? await corsProxy.proxyFetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        })
+      : await fetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        });
 
     if (!response.ok) {
       throw new Error('Failed to get categories');
@@ -239,9 +247,13 @@ export class MacStalkerClient {
       'hd': '1',
     });
 
-    const response = await fetch(`${url}?${params.toString()}`, {
-      headers: this.baseHeaders,
-    });
+    const response = this.useCorsProxy
+      ? await corsProxy.proxyFetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        })
+      : await fetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        });
 
     if (!response.ok) {
       throw new Error('Failed to get channels');
@@ -263,9 +275,13 @@ export class MacStalkerClient {
       'hd': '1',
     });
 
-    const response = await fetch(`${url}?${params.toString()}`, {
-      headers: this.baseHeaders,
-    });
+    const response = this.useCorsProxy
+      ? await corsProxy.proxyFetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        })
+      : await fetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        });
 
     if (!response.ok) {
       throw new Error('Failed to get channels for category');
@@ -281,7 +297,6 @@ export class MacStalkerClient {
   async createLink(channel: Channel): Promise<string> {
     const url = `http://${this.cleanHost()}/server/load.php`;
     
-    // Check if stream has cmd (command) or stream_source
     const streamId = channel.cmd || channel.stream_source;
     
     const params = new URLSearchParams({
@@ -295,9 +310,13 @@ export class MacStalkerClient {
       'watchdog': '1',
     });
 
-    const response = await fetch(`${url}?${params.toString()}`, {
-      headers: this.baseHeaders,
-    });
+    const response = this.useCorsProxy
+      ? await corsProxy.proxyFetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        })
+      : await fetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        });
 
     if (!response.ok) {
       throw new Error('Failed to create stream link');
@@ -305,7 +324,6 @@ export class MacStalkerClient {
 
     const data = await response.json();
     
-    // Return the stream URL
     return data.cmd || data.stream_source || streamId;
   }
 
