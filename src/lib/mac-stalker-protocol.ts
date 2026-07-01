@@ -3,6 +3,8 @@
  * Implements the full Mac Stalker middleware protocol flow
  */
 
+import { corsProxy } from '@/lib/cors-proxy';
+
 export interface MacStalkerConfig {
   host: string;
   macAddress: string;
@@ -35,9 +37,15 @@ export class MacStalkerClient {
   private token: string | null = null;
   private profile: Profile | null = null;
   private baseHeaders: HeadersInit = {};
+  private useCorsProxy: boolean = true;
 
-  constructor(config: MacStalkerConfig) {
+  constructor(config: MacStalkerConfig, useCorsProxy: boolean = true) {
     this.config = config;
+    this.useCorsProxy = useCorsProxy;
+    console.log('Mac Stalker: Initialized', {
+      mac: config.macAddress,
+      corsProxy: useCorsProxy
+    });
   }
 
   /**
@@ -67,14 +75,22 @@ export class MacStalkerClient {
     });
 
     console.log('Mac Stalker: Connecting to', url);
+    console.log('Mac Stalker: Using CORS proxy:', this.useCorsProxy);
     
     try {
-      const response = await fetch(`${url}?${params.toString()}`, {
-        method: 'GET',
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (WebOS; Linux; SmartTV) AppleWebKit/537.36',
-        },
-      });
+      const response = this.useCorsProxy 
+        ? await corsProxy.proxyFetch(`${url}?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (WebOS; Linux; SmartTV) AppleWebKit/537.36',
+            },
+          })
+        : await fetch(`${url}?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (WebOS; Linux; SmartTV) AppleWebKit/537.36',
+            },
+          });
 
       console.log('Mac Stalker: Response status', response.status);
 
@@ -115,21 +131,26 @@ export class MacStalkerClient {
       'device_id': this.config.macAddress,
     });
 
-    const response = await fetch(`${url}?${params.toString()}`);
+    console.log('Mac Stalker: Getting token');
+    
+    const response = this.useCorsProxy
+      ? await corsProxy.proxyFetch(`${url}?${params.toString()}`)
+      : await fetch(`${url}?${params.toString()}`);
+    
     const data = await response.json();
 
     if (data.token) {
       this.token = data.token;
-      // Reconstruct headers to ensure proper typing
       const existingUserAgent = (this.baseHeaders as Record<string, string>)['User-Agent'] || 'Mozilla/5.0 (WebOS; Linux; SmartTV) AppleWebKit/537.36';
       this.baseHeaders = {
         'Authorization': data.token,
         'User-Agent': existingUserAgent,
       };
+      console.log('Mac Stalker: Token obtained');
       return data.token;
     }
 
-    throw new Error('Failed to get token');
+    throw new Error('Failed to get token - server response invalid');
   }
 
   /**
@@ -144,9 +165,13 @@ export class MacStalkerClient {
 
     console.log('Mac Stalker: Getting profile');
     
-    const response = await fetch(`${url}?${params.toString()}`, {
-      headers: this.baseHeaders,
-    });
+    const response = this.useCorsProxy
+      ? await corsProxy.proxyFetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        })
+      : await fetch(`${url}?${params.toString()}`, {
+          headers: this.baseHeaders,
+        });
 
     if (!response.ok) {
       throw new Error(`Failed to get profile: ${response.status}`);
