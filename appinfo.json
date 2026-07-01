@@ -1,0 +1,43 @@
+{
+  "id": "com.kamelkanane.iptv-mac-stalker",
+  "version": "1.0.0",
+  "vendor": "Kamel Kanane",
+  "type": "web",
+  "main": "index.html",
+  "title": "IPTV Mac Stalker",
+  "icon": "icon.png",
+  "largeIcon": "large-icon.png",
+  "uiRevision": "2",
+  "keywords": [
+    "iptv",
+    "mac-stalker",
+    "tv",
+    "streaming"
+  ],
+  "category": "tv.videos",
+  "description": "Fast IPTV client for LG webOS with Mac Stalker middleware protocol support. Features editable playlists, channel categories, and smooth streaming.",
+  "appCategory": "videos",
+  "rootRequired": false,
+  "trustLevel": "normal",
+  "permissions": [
+    "network.authentication",
+    "network.basic"
+  ],
+  "handlesRelaunch": false,
+  "lockMode": false,
+  "visible": true,
+  "accessibility": {
+    "supportsAudioGuidance": false,
+    "supportsVoiceControl": false
+  },
+  "seoKeywords": [
+    "IPTV",
+    "Mac Stalker",
+    "LG TV",
+    "webOS",
+    "streaming"
+  ],
+  "locale": "en_US",
+  "defaultLocale": "en_US",
+  "supports trusting": false
+}

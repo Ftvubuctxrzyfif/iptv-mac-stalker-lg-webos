@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:webos="http://palm.com/webos/widget-schema/1">
+  <name>IPTV Mac Stalker</name>
+  <description>Fast IPTV client for LG webOS with Mac Stalker middleware support</description>
+  <author email="K3nnkml2@gmail.com">Kamel Kanane</author>
+  <icon src="icon.png"/>
+  <license>MIT</license>
+  
+  <webos:localized-info>
+    <webos:locale name="en_US">
+      <webos:name>IPTV Mac Stalker</webos:name>
+      <webos:short-description>Fast IPTV client for LG webOS</webos:short-description>
+      <webos:description>Fast IPTV client for LG webOS with Mac Stalker middleware protocol support. Features editable playlists, channel categories, and smooth streaming.</webos:description>
+    </webos:locale>
+  </webos:localized-info>
+  
+  <webos:permission name="network.basic"/>
+  <webos:permission name="network.authentication"/>
+  
+  <webos:category name="videos"/>
+  
+  <access origin="*" subdomains="true"/>
+  <access origin="http://localhost:*" subdomains="true"/>
+</widget>

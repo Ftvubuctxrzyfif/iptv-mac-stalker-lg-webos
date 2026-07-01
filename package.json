@@ -1,12 +1,26 @@
 {
-  "name": "kliv-app",
+  "name": "iptv-mac-stalker-lg-webos",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Fast IPTV client for LG webOS with Mac Stalker middleware support",
+  "author": "Kamel Kanane <K3nnkml2@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "iptv",
+    "mac-stalker",
+    "webos",
+    "lg-tv",
+    "streaming",
+    "tv"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "package": "bash build-ipk.sh",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

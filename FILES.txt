@@ -1,0 +1,36 @@
+# IPTV Mac Stalker - File List
+
+This document lists all files included in the IPTV Mac Stalker IPK package.
+
+## Core Application Files
+
+- index.html - Main HTML entry point
+- config.xml - WebOS widget configuration
+- appinfo.json - Application manifest
+- services.json - Service definitions
+- LICENSE - MIT License
+
+## Icon Files
+
+- icon.png (80x80) - Application icon
+- large-icon.png (130x130) - Large application icon
+
+## Source Files (from build/)
+
+- main.js - Compiled JavaScript bundle
+- main.css - Compiled CSS bundle
+- assets/ - Static assets (images, fonts, etc.)
+
+## Configuration
+
+- config.ini - Default configuration file
+- README-WEBOS.md - WebOS specific documentation
+
+## Total Package Size
+
+Approximately: 2-3 MB (depending on assets and dependencies)
+
+## Installation Notes
+
+The IPK file is a ZIP archive containing all the files needed to run the application on LG webOS TVs.
+The structure is optimized for the webOS package manager.

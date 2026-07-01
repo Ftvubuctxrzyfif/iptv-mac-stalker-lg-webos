@@ -1,0 +1,9 @@
+{
+  "services": {
+    "com.kamelkanane.iptv-mac-stalker.service": {
+      "description": "IPTV Mac Stalker Background Service",
+      "enabled": true,
+      "executable": "luna://com.kamelkanane.iptv-mac-stalker.service"
+    }
+  }
+}

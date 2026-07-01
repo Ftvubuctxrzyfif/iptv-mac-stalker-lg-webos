@@ -1,0 +1,60 @@
+MIT License
+
+Copyright (c) 2026 Kamel Kanane
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Third-Party Licenses:
+
+This application uses the following open-source libraries:
+
+1. React (MIT License)
+2. Vite (MIT License) 
+3. Tailwind CSS (MIT License)
+4. Radix UI (MIT License)
+5. Lucide React (MIT License)
+6. React Router (MIT License)
+7. and other MIT-licensed dependencies
+
+See package.json for complete list of dependencies.
+
+---
+
+Mac Stalker Protocol Notes:
+
+This application implements the Mac Stalker middleware protocol for IPTV streaming.
+The Mac Stalker protocol is used by various IPTV providers and may be subject to 
+their terms of service. Users should ensure they have proper authorization to access 
+their IPTV services.
+
+This software is provided as-is for educational purposes. The developers are not 
+responsible for any misuse of this software or any violations of IPTV provider terms.
+
+---
+
+Additional Notes:
+
+- This software does not contain any IPTV content or playlists
+- Users must provide their own authorized IPTV service credentials
+- The developers do not provide IPTV services or content
+- This is a client application only, not a content provider
+
+For support and updates, visit: https://github.com/kamelkanane/iptv-mac-stalker-lg-webos
