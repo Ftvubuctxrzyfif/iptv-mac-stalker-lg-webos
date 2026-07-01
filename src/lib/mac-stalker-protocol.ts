@@ -3,7 +3,7 @@
  * Implements the full Mac Stalker middleware protocol flow
  */
 
-interface MacStalkerConfig {
+export interface MacStalkerConfig {
   host: string;
   macAddress: string;
   timezone?: string;
@@ -41,10 +41,20 @@ export class MacStalkerClient {
   }
 
   /**
+   * Helper method to clean host URL
+   * Removes existing protocols and port numbers
+   */
+  private cleanHost(): string {
+    return this.config.host
+      .replace(/^https?:\/\//, '') // Remove http:// or https://
+      .replace(/:\d+$/, ''); // Remove port number like :80
+  }
+
+  /**
    * Step 1: Initialize connection
    */
   async init(): Promise<void> {
-    const url = `http://${this.config.host}/server/load.php`;
+    const url = `http://${this.cleanHost()}/server/load.php`;
     const params = new URLSearchParams({
       type: 'stb',
       action: 'handshake',
@@ -98,7 +108,7 @@ export class MacStalkerClient {
   async getToken(): Promise<string> {
     if (this.token) return this.token;
 
-    const url = `http://${this.config.host}/server/load.php`;
+    const url = `http://${this.cleanHost()}/server/load.php`;
     const params = new URLSearchParams({
       type: 'stb',
       action: 'get_token',
@@ -126,7 +136,7 @@ export class MacStalkerClient {
    * Step 3: Get profile information
    */
   async getProfile(): Promise<Profile> {
-    const url = `http://${this.config.host}/server/load.php`;
+    const url = `http://${this.cleanHost()}/server/load.php`;
     const params = new URLSearchParams({
       type: 'stb',
       action: 'get_profile',
@@ -153,7 +163,7 @@ export class MacStalkerClient {
    * Step 4: Get main info
    */
   async getMainInfo(): Promise<any> {
-    const url = `http://${this.config.host}/server/load.php`;
+    const url = `http://${this.cleanHost()}/server/load.php`;
     const params = new URLSearchParams({
       type: 'stb',
       action: 'get_main_info',
@@ -174,7 +184,7 @@ export class MacStalkerClient {
    * Step 5: Get categories
    */
   async getCategories(): Promise<Category[]> {
-    const url = `http://${this.config.host}/server/load.php`;
+    const url = `http://${this.cleanHost()}/server/load.php`;
     const params = new URLSearchParams({
       type: 'itv',
       action: 'get_genres',
@@ -196,7 +206,7 @@ export class MacStalkerClient {
    * Step 6: Get all channels
    */
   async getAllChannels(): Promise<Channel[]> {
-    const url = `http://${this.config.host}/server/load.php`;
+    const url = `http://${this.cleanHost()}/server/load.php`;
     const params = new URLSearchParams({
       type: 'itv',
       action: 'get_all_channels',
@@ -220,7 +230,7 @@ export class MacStalkerClient {
    * Step 7: Get channels by category
    */
   async getChannelsByCategory(categoryId: number): Promise<Channel[]> {
-    const url = `http://${this.config.host}/server/load.php`;
+    const url = `http://${this.cleanHost()}/server/load.php`;
     const params = new URLSearchParams({
       type: 'itv',
       action: 'get_channels',
@@ -244,7 +254,7 @@ export class MacStalkerClient {
    * Step 8: Create stream link and get play URL
    */
   async createLink(channel: Channel): Promise<string> {
-    const url = `http://${this.config.host}/server/load.php`;
+    const url = `http://${this.cleanHost()}/server/load.php`;
     
     // Check if stream has cmd (command) or stream_source
     const streamId = channel.cmd || channel.stream_source;

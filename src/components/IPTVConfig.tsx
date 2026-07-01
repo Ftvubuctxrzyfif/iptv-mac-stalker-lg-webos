@@ -77,13 +77,15 @@ const IPTVConfig = ({ onSave, initialHost = '', initialMacAddress = '' }: IPTVCo
             <Label htmlFor="host">Server Host</Label>
             <Input
               id="host"
-              placeholder="portal.example.com or 192.168.1.100"
+              placeholder="portal.example.com"
               value={host}
               onChange={(e) => setHost(e.target.value)}
               className="text-lg"
             />
             <p className="text-sm text-muted-foreground">
-              Enter your IPTV portal address without http://
+              Enter your IPTV portal address (with or without http://)
+              <br />
+              <span className="text-xs">Examples: portal.example.com, http://portal.com, 192.168.1.100</span>
             </p>
           </div>
 
